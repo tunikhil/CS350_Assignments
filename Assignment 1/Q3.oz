@@ -19,20 +19,29 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-local Approximate in
-   fun lazy {Approximate S Epsilon}
-      local App in
-	 fun {App Xs Ep Prev}
-	  if {Abs (Xs.1 - Prev)} < Epsilon then Xs.1 | nil
+local Approximate Sin in
+   fun lazy {Sin X}
+     local Term in
+	 fun lazy {Term N Exp}
+	    Exp|{Term N+1.0 (~1.0*Exp*X*X)/((2.0*N)*(2.0*N + 1.0))}
+	 end
+
+	 {Term 1.0 X}
+      end
+   end
+   fun {Approximate S X Epsilon}
+      local App Xs={S X} in
+	 fun {App Xs Prev}
+	  if {Abs (Xs.1 - Prev)} < Epsilon then Xs.1
 	    else
-	      Xs.1 | {App Xs.2 Xs.1}
+	      Xs.1 + {App Xs.2 Xs.1}
 	    end
 	 end
-	 S.1 | {App S.2 Ep S.1}
+	 Xs.1 + {App Xs.2 Xs.1}
       end
    end
    
-   {Browse {Approximate {Sin 0.5} 0.01}}
+   {Browse {Approximate Sin 0.5 0.01}}
 end
 
    
