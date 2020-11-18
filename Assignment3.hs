@@ -29,3 +29,12 @@ word (xs) = length (words xs)
 composition :: [a->a]->a->a
 composition [] n = n
 composition (x:xs) n = x (composition xs n)
+
+-------Q6-----------------
+
+data BinaryTree a = Nil | Node a (BinaryTree a) (BinaryTree a)
+
+maptree :: (a->b) -> BinaryTree a -> BinaryTree b
+
+maptree f Nil = Nil
+maptree f (Node n left right) = Node (f n) (maptree f left) (maptree f right)
